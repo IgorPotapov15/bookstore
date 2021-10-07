@@ -1,10 +1,15 @@
 import { appAxios } from "./axios.config"
 
-export const getBooksReq = async () => {
+export const getBooksReq = async (sortBy: any, order: any) => {
+  console.log(sortBy, order)
   try {
     const res: any = await appAxios({
       method: 'get',
-      url: '/get-books'
+      url: '/get-books',
+      params: {
+        order: order,
+        sortBy: sortBy
+      }
     })
     console.log(res)
     return res

@@ -3,18 +3,23 @@ import { getBooksReq } from "../api/getBooksReq"
 
 export interface Books {
   items: Array<any>,
-  isLoading: boolean
+  isLoading: boolean,
+  order: string,
+  sortBy: string
 }
 
 const initialState: Books = {
   items: [],
-  isLoading: false
+  isLoading: false,
+  order: 'asc',
+  sortBy: 'createdAt'
 }
 
 export const fetchBooks = createAsyncThunk(
   'books/fetchStatus',
-  async () => {
-    const res = await getBooksReq()
+  async (_, api) => {
+    let state: any = api.getState()
+    const res = await getBooksReq(state.books.sortBy, state.books.order)
     return res.data
   }
 )
@@ -23,7 +28,12 @@ export const bookSlice = createSlice({
   name: 'books',
   initialState,
   reducers: {
-
+    changeOrder: (state, action) => {
+      state.order = action.payload
+    },
+    changeSort: (state, action) => {
+      state.sortBy = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchBooks.pending, (state, action) => {
@@ -41,5 +51,5 @@ export const bookSlice = createSlice({
   }
 })
 
-export const {  } = bookSlice.actions
+export const { changeOrder, changeSort } = bookSlice.actions
 export default bookSlice.reducer

@@ -112,6 +112,7 @@ const AdminForm = () => {
               type="number"
               name="rating"
               min="0.1"
+              step="0.01"
               onChange={handleChange} 
               value={rating}
               required
