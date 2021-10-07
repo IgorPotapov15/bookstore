@@ -23,7 +23,11 @@ const BookCard = ({item}: any) => {
   return (
     <div>
       <img src={item.img}/>
-      <img src={item.img2}/>
+      { item.img2 !== null ? 
+        <img src={item.img2}/> :
+        ''
+      }
+      
       <h2>{item.name}</h2>
       <p>{item.description}</p>
       {role === 'Admin' ? 

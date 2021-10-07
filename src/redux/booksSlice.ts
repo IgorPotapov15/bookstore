@@ -33,7 +33,7 @@ export const bookSlice = createSlice({
       const tempArr:any = action.payload
       tempArr.forEach((item: any) => {
         item.img = "data:image/png;base64," + item.img
-        item.img2 = "data:image/png;base64," + item.img2
+        item.img2 = item.img2 === null ? null : "data:image/png;base64," + item.img2
       })
       state.items = tempArr
       state.isLoading = false

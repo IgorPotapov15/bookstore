@@ -1,6 +1,6 @@
 import { appAxios } from "./axios.config"
 
-export const postBookReq = async (uint8Array: any, uint8Array2: any, name: string, description: string, genre: string, author: string) => {
+export const postBookReq = async (uint8Array: any, uint8Array2: any, name: string, description: string, genre: string, author: string, rating: number, price: number) => {
   try {
     const res: any = await appAxios({
       method: 'post',
@@ -11,7 +11,9 @@ export const postBookReq = async (uint8Array: any, uint8Array2: any, name: strin
             name: name,
             description: description,
             genre: genre,
-            author: author
+            author: author,
+            rating: rating,
+            price: price
           },
     })
     console.log([...uint8Array])
