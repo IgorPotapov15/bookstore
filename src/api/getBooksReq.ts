@@ -1,6 +1,6 @@
 import { appAxios } from "./axios.config"
 
-export const getBooksReq = async (sortBy: any, order: any, filterBy: any, from:any, to: any, filterValue: any) => {
+export const getBooksReq = async (sortBy: any, order: any, filterBy: any, from:any, to: any, filterValue: any, page: any) => {
   console.log(sortBy, order)
   try {
     const res: any = await appAxios({
@@ -13,7 +13,7 @@ export const getBooksReq = async (sortBy: any, order: any, filterBy: any, from:a
         from: from,
         to: to,
         filterValue: filterValue,
-        page: ''
+        page: page
       }
     })
     console.log(res)

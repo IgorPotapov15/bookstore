@@ -4,6 +4,7 @@ import { getBooksReq } from "../api/getBooksReq"
 
 export interface Books {
   items: Array<any>,
+  totalItems: number,
   isLoading: boolean,
   order: string,
   sortBy: string,
@@ -16,6 +17,7 @@ export interface Books {
 
 const initialState: Books = {
   items: [],
+  totalItems: 0,
   isLoading: false,
   order: 'asc',
   sortBy: 'createdAt',
@@ -30,7 +32,7 @@ export const fetchBooks = createAsyncThunk(
   'books/fetchStatus',
   async (_, api) => {
     let state: any = api.getState()
-    const res = await getBooksReq(state.books.sortBy, state.books.order, state.books.filterBy, state.books.from, state.books.to, state.books.filterValue)
+    const res = await getBooksReq(state.books.sortBy, state.books.order, state.books.filterBy, state.books.from, state.books.to, state.books.filterValue, state.books.page)
     console.log(res)
     return res.data
   }
@@ -59,6 +61,15 @@ export const bookSlice = createSlice({
       state.filterValue = action.payload.filterValue
       state.from = action.payload.from
       state.to = action.payload.to
+    },
+    prevPage: (state) => {
+      state.page = state.page - 1
+    },
+    nextPage: (state) => {
+      state.page = state.page + 1
+    },
+    setPage: (state, action) => {
+      state.page = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -66,16 +77,17 @@ export const bookSlice = createSlice({
       state.isLoading = true
     })
     builder.addCase(fetchBooks.fulfilled, (state, action) => {
-      const tempArr:any = action.payload
+      const tempArr:any = action.payload.books
       tempArr.forEach((item: any) => {
         item.img = "data:image/png;base64," + item.img
         item.img2 = item.img2 === null ? null : "data:image/png;base64," + item.img2
       })
       state.items = tempArr
       state.isLoading = false
+      state.totalItems = action.payload.count
     })
   }
 })
 
-export const { changeOrder, changeSort, setBookSearch } = bookSlice.actions
+export const { changeOrder, changeSort, setBookSearch, prevPage, nextPage, setPage } = bookSlice.actions
 export default bookSlice.reducer

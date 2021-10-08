@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../redux/hooks"
 import { fetchBooks, changeOrder, changeSort, setBookSearch } from '../redux/booksSlice'
 import React, { useEffect, useState } from "react"
+import Pagination from './Pagination'
 
 const MainPage = () => {
   const dispatch = useAppDispatch()
@@ -12,6 +13,7 @@ const MainPage = () => {
   const filterValueState = useAppSelector(state => state.books.filterValue)
   const fromState = useAppSelector(state => state.books.from)
   const toState = useAppSelector(state => state.books.to)
+  const page = useAppSelector(state => state.books.page)
   const [order, setOrder] = useState('asc')
   const [sort, setSort] = useState('createdAt')
   const [search, setSearch] = useState('')
@@ -24,7 +26,7 @@ const MainPage = () => {
   
   useEffect(() => {
     dispatch(fetchBooks())
-  }, [orderState, sortState, filterByState, filterValueState, fromState, toState])
+  }, [page, orderState, sortState, filterByState, filterValueState, fromState, toState])
 
   useEffect(() => {
     dispatch(changeOrder(order))
@@ -246,11 +248,17 @@ const MainPage = () => {
                 <a href={item.id}>
                   <img src={item.img} style={{width: '50px'}} />
                   {item.name}
+                  <div>
+                    {item.genre}<br/>
+                    {item.author}<br/>
+                    €{item.price}<br/>
+                  </div>
                 </a>
               </li>
             )
           }
         </ul>
+        <Pagination />
     </div>
   )
 }
