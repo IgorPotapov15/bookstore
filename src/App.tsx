@@ -25,7 +25,10 @@ function App() {
   const isAuthorized = useAppSelector(state => state.user.isAuthorized)
   const isTokenChecking = useAppSelector(state => state.user.isTokenChecking)
   const booksList = useAppSelector(state => state.books.items)
+  const page = useAppSelector(state => state.books.page)
   const dispatch = useAppDispatch()
+
+  console.log(booksList);
 
   useEffect(() => {
     checkTokenFunc()
@@ -40,7 +43,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchBooks())
-  }, [])
+  }, [page])
 
   return (
     <Router>
@@ -57,7 +60,7 @@ function App() {
               !isTokenChecking && !isAuthorized ?
             <li>
               <Link to="/signin">Sign in</Link>
-              <br />
+              <br/>
               <Link to="/signup">Sign Up</Link>
             </li>
               : ''
@@ -77,6 +80,7 @@ function App() {
           <Route exact path="/">
             <MainPage/>
           </Route>
+          {/* <Route path="/:id" component={BookCard} /> */}
           {
             booksList.map(item => 
               <Route key={item.id} path={generatePath('/:id', { id: item.id })}>

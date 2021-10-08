@@ -2,6 +2,14 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks"
 import { fetchBooks, changeOrder, changeSort, setBookSearch } from '../redux/booksSlice'
 import React, { useEffect, useState } from "react"
 import Pagination from './Pagination'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  generatePath,
+  Redirect,
+} from 'react-router-dom';
 
 const MainPage = () => {
   const dispatch = useAppDispatch()
@@ -76,10 +84,17 @@ const MainPage = () => {
       case 'ratingTo':
         setRatingTo(e.currentTarget.value)
         break
+      case 'genreSelect':
+        setGenre(e.currentTarget.value)
+        break
+      case 'authorSelect':
+        setAuthor(e.currentTarget.value)
+        break
     }
   }
 
   const handleSubmitSearch = (e: any) => {
+    console.log(author, genre)
     switch (e.target.id) {
       case 'priceSearch':
         if (priceFrom || priceTo) {
@@ -191,7 +206,7 @@ const MainPage = () => {
               </div> :
               search === 'genre' ?
               <div>
-                <select>
+                <select id="genreSelect" onChange={handleChangeSearchValue}>
                   <option value=""></option>
                   <option value="Classics">Classics</option>
                   <option value="Detective">Detective</option>
@@ -206,7 +221,7 @@ const MainPage = () => {
               </div> :
               search === 'author' ?
               <div>
-                <select>
+                <select id="authorSelect" onChange={handleChangeSearchValue}>
                   <option value=""></option>
                   <option value="Author A">Author A</option>
                   <option value="Author B">Author B</option>
@@ -245,7 +260,7 @@ const MainPage = () => {
           {isBooksLoading ? <h1>Loading...</h1> :
             booksList.map(item => 
               <li key={item.id}>
-                <a href={item.id}>
+                <Link to={`/${item.id}`}>
                   <img src={item.img} style={{width: '50px'}} />
                   {item.name}
                   <div>
@@ -253,7 +268,7 @@ const MainPage = () => {
                     {item.author}<br/>
                     €{item.price}<br/>
                   </div>
-                </a>
+                </Link>
               </li>
             )
           }

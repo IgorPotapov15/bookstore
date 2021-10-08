@@ -7,6 +7,9 @@ import { fetchUser } from "../redux/userSlice"
 
 const BookCard = ({item}: any) => {
   const dispatch = useAppDispatch()
+  const booksList = useAppSelector(state => state.books.items)
+  // const item = booksList[0]
+  // console.log(item, booksList);
   const history = useHistory()
   useEffect(() => {
     dispatch(fetchUser())
@@ -26,8 +29,7 @@ const BookCard = ({item}: any) => {
       { item.img2 !== null ? 
         <img src={item.img2}/> :
         ''
-      }
-      
+      }      
       <h2>{item.name}</h2>
       <p>{item.description}</p>
       {role === 'Admin' ? 
