@@ -50,6 +50,14 @@ const MainPage = () => {
     setGenre('')
     setAuthor('')
     setSearch(e.currentTarget.value)
+    if (!e.currentTarget.value) {
+      dispatch(setBookSearch({
+        filterBy: '',
+        filterValue: '',
+        from: '',
+        to: ''
+      }))
+    }
   }
 
   const handleChangeSearchValue = (e: any) => {
@@ -96,10 +104,28 @@ const MainPage = () => {
         }
         break
       case 'authorSearch':
-
+        if (author) {
+          dispatch(setBookSearch({
+            filterBy: 'author',
+            filterValue: author,
+            from: '',
+            to: ''
+          }))
+        } else {
+          return
+        }
         break
       case 'ratingSearch':
-
+        if (ratingFrom || ratingTo) {
+          dispatch(setBookSearch({
+            filterBy: 'rating',
+            filterValue: '',
+            from: ratingFrom,
+            to: ratingTo
+          }))
+        } else {
+          return
+        }
         break
     }
   }
