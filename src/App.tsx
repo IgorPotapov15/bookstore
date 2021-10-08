@@ -9,7 +9,7 @@ import {
   Route,
   Link,
   generatePath,
-  Redirect
+  Redirect,
 } from 'react-router-dom';
 
 import MainPage from './components/MainPage'
@@ -29,6 +29,7 @@ function App() {
 
   useEffect(() => {
     checkTokenFunc()
+    console.log(isAuthorized)
   }, [])
 
   async function checkTokenFunc() {

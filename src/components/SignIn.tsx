@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useAppSelector, useAppDispatch } from '../redux/hooks'
-import { setIsAuthorized } from '../redux/userSlice'
+import { useAppDispatch } from '../redux/hooks'
+import { fetchToken } from '../redux/userSlice'
 import { useHistory } from 'react-router-dom'
 import { signInReq } from '../api/signInReq'
 
@@ -27,7 +27,7 @@ const SignIn = () => {
       history.push('/')
     }
     dispatch(
-      setIsAuthorized(true)
+      fetchToken()
     )
   }
 

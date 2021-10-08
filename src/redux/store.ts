@@ -7,6 +7,12 @@ export const store =  configureStore({
     user: user,
     books: books
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredPaths: ['books.authors', 'books.genres'],
+      },
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>
