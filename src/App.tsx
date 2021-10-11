@@ -1,7 +1,7 @@
 import React from 'react'
 import { useAppSelector, useAppDispatch } from './redux/hooks'
 import { useEffect } from 'react'
-import { changeOrder, fetchBooks, setPage } from './redux/booksSlice'
+import { changeOrder, changeSort, fetchBooks, setBookSearch, setChapter, setPage } from './redux/booksSlice'
 
 import {
   Switch,
@@ -29,17 +29,61 @@ function App() {
   const booksList = useAppSelector(state => state.books.items)
   const dispatch = useAppDispatch()
   const location = useLocation()
-  let query = new URLSearchParams(location.search)
+  const orderState = useAppSelector(state => state.books.order)
+  const sortState = useAppSelector(state => state.books.sortBy)
+  const filterByState = useAppSelector(state => state.books.filterBy)
+  const filterValueState = useAppSelector(state => state.books.filterValue)
+  const fromState = useAppSelector(state => state.books.from)
+  const toState = useAppSelector(state => state.books.to)
+  const page = useAppSelector(state => state.books.page)
+  const chapter = useAppSelector(state => state.books.currChapter)
+  const history = useHistory()
+  
+  const params = {
+    page: `page=${page}`,
+    order: `order=${orderState}`,
+    sortBy: `sortBy=${sortState}`,
+    filterByState: `filterBy=${filterByState}`,
+    filterValueState: `value=${filterValueState}`,
+    fromState: `from=${fromState}`,
+    toState: `to=${toState}`
+  }
 
   useEffect(() => {
-    // dispatch(setPage(query.get('page')))
-    // console.log(query.get('order'), query.get('page'), query.get('sortBy'))
-    // console.log(query.get('orger'), '---------------------------------------')
-    for (let p of query as any) {
-      console.log(p);
-    }
-    // dispatch(changeOrder(query.get('order')))
+    let query = new URLSearchParams(location.search)
+    // if (query.get('page') &&
+    //     query.get('order') &&
+    //     query.get('sortBy')
+    // ) {
+      dispatch(setPage(query.get('page')))
+      dispatch(changeOrder(query.get('order')))
+      dispatch(changeSort(query.get('sortBy')))
+      dispatch(setBookSearch({
+        filterBy: query.get('filterBy') ? query.get('filterBy') : '',
+        filterValue: query.get('value') ? query.get('value') : '',
+        from: query.get('from') ? query.get('from') : '',
+        to: query.get('to') ? query.get('to') : ''
+      }))
+    // }
   }, [])
+
+  useEffect(() => {
+    dispatch(fetchBooks())
+    if (chapter === '/' || chapter === '') {
+      setURL()
+    }
+  }, [page, orderState, sortState, filterByState, filterValueState, fromState, toState, chapter])
+
+  function setURL() {
+      history.push({
+        pathname: '/',
+        search: '?' + params.page + '&' + params.order + '&' + params.sortBy +
+        (filterByState ? '&' + params.filterByState : '') + 
+        (filterValueState ? '&' + params.filterValueState : '') + 
+        (fromState ? '&' + params.fromState : '') + 
+        (toState ? '&' + params.toState : '')
+      })
+  }
 
   useEffect(() => {
     checkTokenFunc()
@@ -50,24 +94,28 @@ function App() {
     dispatch(
       fetchToken()
     )
-  }  
+  }
+
+  const changeChapter = (path: string) => {
+    dispatch(setChapter(path))
+  }
 
   return (
       <div>
         <nav>
           <ul>
-            <li>
-              <Link to="/">Home</Link>
+            <li onClick={setURL}>
+              <Link to="/" onClick={() => changeChapter('/')}>Home</Link>
             </li>
             {!isTokenChecking && isAuthorized ? 
             <li>
-            <Link to="/user">User</Link>
+            <Link to="/user" onClick={() => changeChapter('/user')}>User</Link>
             </li> :
               !isTokenChecking && !isAuthorized ?
             <li>
-              <Link to="/signin">Sign in</Link>
+              <Link to="/signin" onClick={() => changeChapter('/signin')}>Sign in</Link>
               <br/>
-              <Link to="/signup">Sign Up</Link>
+              <Link to="/signup" onClick={() => changeChapter('/signup')}>Sign Up</Link>
             </li>
               : ''
             }

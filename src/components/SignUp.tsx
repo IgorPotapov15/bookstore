@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
 import { setIsAuthorized } from '../redux/userSlice'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { signUpReq } from '../api/signUpReq'
 import { useEffect } from 'react'
+import { setChapter } from '../redux/booksSlice'
 
 const SignUp = () => {
   const [email, setEmail] = useState('')
@@ -12,7 +13,12 @@ const SignUp = () => {
   const [username, setUsername] = useState('');
   const dispatch = useAppDispatch()
   const history = useHistory()
+  const location = useLocation()
   const isAuthorized = useAppSelector(state => state.user.isAuthorized)
+
+  useEffect(() => {
+    dispatch(setChapter(location.pathname))
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.type === 'text') {

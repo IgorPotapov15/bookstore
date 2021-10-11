@@ -1,14 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppDispatch } from '../redux/hooks'
 import { fetchToken, fetchUser } from '../redux/userSlice'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { signInReq } from '../api/signInReq'
+import { setChapter } from '../redux/booksSlice'
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useAppDispatch()
   const history = useHistory()
+  const location = useLocation()
+  
+  useEffect(() => {
+    dispatch(setChapter(location.pathname))
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.type === 'email') {

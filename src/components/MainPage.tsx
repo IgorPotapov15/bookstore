@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../redux/hooks"
-import { fetchBooks, changeOrder, changeSort, setBookSearch, setPage } from '../redux/booksSlice'
+import { fetchBooks, changeOrder, changeSort, setBookSearch, setChapter, setPage } from '../redux/booksSlice'
 import React, { useEffect, useState } from "react"
 import Pagination from './Pagination'
 import {
@@ -16,17 +16,13 @@ import {
 const MainPage = () => {
   const dispatch = useAppDispatch()
   const history = useHistory()
+  const location = useLocation()
   const booksList = useAppSelector(state => state.books.items)
   const isBooksLoading = useAppSelector(state => state.books.isLoading)
   const orderState = useAppSelector(state => state.books.order)
   const sortState = useAppSelector(state => state.books.sortBy)
-  const filterByState = useAppSelector(state => state.books.filterBy)
-  const filterValueState = useAppSelector(state => state.books.filterValue)
-  const fromState = useAppSelector(state => state.books.from)
-  const toState = useAppSelector(state => state.books.to)
-  const page = useAppSelector(state => state.books.page)
-  const [order, setOrder] = useState('asc')
-  const [sort, setSort] = useState('createdAt')
+  const [order, setOrder] = useState(orderState)
+  const [sort, setSort] = useState(sortState)
   const [search, setSearch] = useState('')
   const [priceFrom, setPriceFrom] = useState('')
   const [priceTo, setPriceTo] = useState('')
@@ -35,26 +31,9 @@ const MainPage = () => {
   const [genre, setGenre] = useState('')
   const [author, setAuthor] = useState('')
 
-  const params = {
-    page: `page=${page}`,
-    order: `order=${orderState}`,
-    sortBy: `sortBy=${sortState}`,
-    filterByState: `filterBy=${filterByState}`,
-    filterValueState: `value=${filterValueState}`,
-    fromState: `from=${fromState}`,
-    toState: `to=${toState}`
-  }
-
   useEffect(() => {
-    dispatch(fetchBooks())
-    history.push({
-      search: '?' + params.page + '&' + params.order + '&' + params.sortBy +
-      (filterByState ? '&' + params.filterByState : '') + 
-      (filterValueState ? '&' + params.filterValueState : '') + 
-      (fromState ? '&' + params.fromState : '') + 
-      (toState ? '&' + params.toState : '')
-    })   
-  }, [page, orderState, sortState, filterByState, filterValueState, fromState, toState, MainPage])
+    dispatch(setChapter(location.pathname))
+  }, [])
 
   useEffect(() => {
     dispatch(changeOrder(order))
@@ -87,7 +66,6 @@ const MainPage = () => {
         from: '',
         to: ''
       }))
-      history.push('/')
     }
   }
 
@@ -115,7 +93,7 @@ const MainPage = () => {
   }
 
   const handleSubmitSearch = (e: any) => {
-    console.log(author, genre)
+    setPage(1)
     switch (e.target.id) {
       case 'priceSearch':
         if (priceFrom || priceTo) {
@@ -187,7 +165,8 @@ const MainPage = () => {
         </div>
         <div>
           Search:
-            <select onChange={handleChangeSearchType}>
+            <select
+              onChange={handleChangeSearchType}>
               <option value=""></option>
               <option
                 value="price"

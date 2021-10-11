@@ -12,8 +12,6 @@ const Pagination = () => {
 		pageNumber.push(i);
 	}
 
-  console.log(totalItems)
-
   let showStart
 	let showEnd
 

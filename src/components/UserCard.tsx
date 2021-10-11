@@ -1,24 +1,26 @@
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
 import { fetchUser, setIsAuthorized } from '../redux/userSlice'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { signOutReq } from '../api/signOutReq'
 import { editUserReq } from '../api/editUserReq'
 import { useEffect, useState } from 'react'
 import AdminForm from './AdminForm'
+import { setChapter } from '../redux/booksSlice'
 
 const UserCard = () => {
   const [isAdminShown, setIsAdminShown] = useState(false)
   const [targetField, setTargetField] = useState('');
   const dispatch = useAppDispatch()
-  const history = useHistory()
+  const location = useLocation()
   const username = useAppSelector(state => state.user.username)
   const email = useAppSelector(state => state.user.email)
   const dob = useAppSelector(state => state.user.dob)
   const role = useAppSelector(state => state.user.role)
   const isExists = useAppSelector(state => state.user.isExists)
-  const isAuthorized = useAppSelector(state => state.user.isAuthorized)
+
   useEffect(() => {
     dispatch(fetchUser())
+    dispatch(setChapter(location.pathname))
   }, [])
 
   useEffect(() => {

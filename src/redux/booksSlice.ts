@@ -12,7 +12,8 @@ export interface Books {
   from: number | string,
   to: number | string,
   filterValue: string,
-  page: number
+  page: number,
+  currChapter: string
 }
 
 const initialState: Books = {
@@ -25,7 +26,8 @@ const initialState: Books = {
   from: '',
   to: '',
   filterValue: '',
-  page: 1
+  page: 1,
+  currChapter: ''
 }
 
 export const fetchBooks = createAsyncThunk(
@@ -70,6 +72,9 @@ export const bookSlice = createSlice({
     },
     setPage: (state, action) => {
       state.page = action.payload
+    },
+    setChapter: (state, action) => {
+      state.currChapter = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -89,5 +94,5 @@ export const bookSlice = createSlice({
   }
 })
 
-export const { changeOrder, changeSort, setBookSearch, prevPage, nextPage, setPage } = bookSlice.actions
+export const { changeOrder, changeSort, setBookSearch, prevPage, nextPage, setPage, setChapter } = bookSlice.actions
 export default bookSlice.reducer

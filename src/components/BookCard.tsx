@@ -1,6 +1,7 @@
 import { useEffect } from "react"
-import { useHistory } from "react-router-dom"
+import { useHistory, useLocation } from "react-router-dom"
 import { deleteBookReq } from "../api/deleteBookReq"
+import { setChapter } from "../redux/booksSlice"
 import { useAppSelector, useAppDispatch } from "../redux/hooks"
 import { fetchUser } from "../redux/userSlice"
 
@@ -8,9 +9,12 @@ import { fetchUser } from "../redux/userSlice"
 const BookCard = ({item}: any) => {
   const dispatch = useAppDispatch()
   const booksList = useAppSelector(state => state.books.items)
+  const location = useLocation()
 
   const history = useHistory()
+  
   useEffect(() => {
+    dispatch(setChapter(location.pathname))
     dispatch(fetchUser())
   }, [])
   const role = useAppSelector(state => state.user.role)
