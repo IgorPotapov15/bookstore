@@ -1,15 +1,17 @@
 import React from 'react'
 import { useAppSelector, useAppDispatch } from './redux/hooks'
 import { useEffect } from 'react'
-import { fetchBooks } from './redux/booksSlice'
+import { changeOrder, fetchBooks, setPage } from './redux/booksSlice'
 
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   Link,
   generatePath,
-  Redirect
+  Redirect,
+  useHistory,
+  withRouter,
+  useLocation
 } from 'react-router-dom';
 
 import MainPage from './components/MainPage'
@@ -25,8 +27,19 @@ function App() {
   const isAuthorized = useAppSelector(state => state.user.isAuthorized)
   const isTokenChecking = useAppSelector(state => state.user.isTokenChecking)
   const booksList = useAppSelector(state => state.books.items)
-  const page = useAppSelector(state => state.books.page)
   const dispatch = useAppDispatch()
+  const location = useLocation()
+  let query = new URLSearchParams(location.search)
+
+  useEffect(() => {
+    // dispatch(setPage(query.get('page')))
+    // console.log(query.get('order'), query.get('page'), query.get('sortBy'))
+    // console.log(query.get('orger'), '---------------------------------------')
+    for (let p of query as any) {
+      console.log(p);
+    }
+    // dispatch(changeOrder(query.get('order')))
+  }, [])
 
   useEffect(() => {
     checkTokenFunc()
@@ -37,14 +50,9 @@ function App() {
     dispatch(
       fetchToken()
     )
-  }
-
-  useEffect(() => {
-    dispatch(fetchBooks())
-  }, [page])
+  }  
 
   return (
-    <Router>
       <div>
         <nav>
           <ul>
@@ -78,7 +86,6 @@ function App() {
           <Route exact path="/">
             <MainPage/>
           </Route>
-          {/* <Route path="/:id" component={BookCard} /> */}
           {
             booksList.map(item => 
               <Route key={item.id} path={generatePath('/:id', { id: item.id })}>
@@ -93,8 +100,7 @@ function App() {
           </Route>
         </Switch>
       </div>
-    </Router>
   );
 }
 
-export default App;
+export default withRouter(App)

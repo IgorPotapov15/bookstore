@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../redux/hooks"
-import { fetchBooks, changeOrder, changeSort, setBookSearch } from '../redux/booksSlice'
+import { fetchBooks, changeOrder, changeSort, setBookSearch, setPage } from '../redux/booksSlice'
 import React, { useEffect, useState } from "react"
 import Pagination from './Pagination'
 import {
@@ -36,28 +36,25 @@ const MainPage = () => {
   const [author, setAuthor] = useState('')
 
   const params = {
-    page: `?page=${page}&`,
-    order: `?order=${order}`,
-    sortBy: `?sortBy=${sortState}`,
-    filterByState: `?filterBy=${filterByState}`,
-    filterValueState: `?value=${filterValueState}`,
-    fromState: `?from=${fromState}`,
-    toState: `?to=${toState}`
+    page: `page=${page}`,
+    order: `order=${orderState}`,
+    sortBy: `sortBy=${sortState}`,
+    filterByState: `filterBy=${filterByState}`,
+    filterValueState: `value=${filterValueState}`,
+    fromState: `from=${fromState}`,
+    toState: `to=${toState}`
   }
 
-  const query = new URLSearchParams(useLocation().search)
-  console.log(query)
-  
   useEffect(() => {
     dispatch(fetchBooks())
     history.push({
-      search: params.page + params.order + params.sortBy + 
-      (filterByState ? params.filterByState : '') + 
-      (filterValueState ? params.filterValueState : '') + 
-      (fromState ? params.fromState : '') + 
-      (toState ? params.toState : '')
-    })
-  }, [page, orderState, sortState, filterByState, filterValueState, fromState, toState])
+      search: '?' + params.page + '&' + params.order + '&' + params.sortBy +
+      (filterByState ? '&' + params.filterByState : '') + 
+      (filterValueState ? '&' + params.filterValueState : '') + 
+      (fromState ? '&' + params.fromState : '') + 
+      (toState ? '&' + params.toState : '')
+    })   
+  }, [page, orderState, sortState, filterByState, filterValueState, fromState, toState, MainPage])
 
   useEffect(() => {
     dispatch(changeOrder(order))
