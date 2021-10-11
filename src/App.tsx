@@ -9,7 +9,7 @@ import {
   Route,
   Link,
   generatePath,
-  Redirect,
+  Redirect
 } from 'react-router-dom';
 
 import MainPage from './components/MainPage'
@@ -27,8 +27,6 @@ function App() {
   const booksList = useAppSelector(state => state.books.items)
   const page = useAppSelector(state => state.books.page)
   const dispatch = useAppDispatch()
-
-  console.log(booksList);
 
   useEffect(() => {
     checkTokenFunc()

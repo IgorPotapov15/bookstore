@@ -9,10 +9,13 @@ import {
   Link,
   generatePath,
   Redirect,
+  useHistory,
+  useLocation
 } from 'react-router-dom';
 
 const MainPage = () => {
   const dispatch = useAppDispatch()
+  const history = useHistory()
   const booksList = useAppSelector(state => state.books.items)
   const isBooksLoading = useAppSelector(state => state.books.isLoading)
   const orderState = useAppSelector(state => state.books.order)
@@ -31,9 +34,29 @@ const MainPage = () => {
   const [ratingTo, setRatingTo] = useState('')
   const [genre, setGenre] = useState('')
   const [author, setAuthor] = useState('')
+
+  const params = {
+    page: `?page=${page}&`,
+    order: `?order=${order}`,
+    sortBy: `?sortBy=${sortState}`,
+    filterByState: `?filterBy=${filterByState}`,
+    filterValueState: `?value=${filterValueState}`,
+    fromState: `?from=${fromState}`,
+    toState: `?to=${toState}`
+  }
+
+  const query = new URLSearchParams(useLocation().search)
+  console.log(query)
   
   useEffect(() => {
     dispatch(fetchBooks())
+    history.push({
+      search: params.page + params.order + params.sortBy + 
+      (filterByState ? params.filterByState : '') + 
+      (filterValueState ? params.filterValueState : '') + 
+      (fromState ? params.fromState : '') + 
+      (toState ? params.toState : '')
+    })
   }, [page, orderState, sortState, filterByState, filterValueState, fromState, toState])
 
   useEffect(() => {
@@ -67,6 +90,7 @@ const MainPage = () => {
         from: '',
         to: ''
       }))
+      history.push('/')
     }
   }
 

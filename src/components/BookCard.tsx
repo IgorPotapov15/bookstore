@@ -8,8 +8,7 @@ import { fetchUser } from "../redux/userSlice"
 const BookCard = ({item}: any) => {
   const dispatch = useAppDispatch()
   const booksList = useAppSelector(state => state.books.items)
-  // const item = booksList[0]
-  // console.log(item, booksList);
+
   const history = useHistory()
   useEffect(() => {
     dispatch(fetchUser())
