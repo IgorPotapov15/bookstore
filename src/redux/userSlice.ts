@@ -77,6 +77,7 @@ export const userSlice = createSlice({
     builder.addCase(fetchToken.fulfilled, (state, action) => {
       state.isAuthorized = true
       state.isTokenChecking = false
+      state.isExists = true
       console.log('fulfiilled')
     })
     builder.addCase(fetchToken.rejected, (state, action: any) => {

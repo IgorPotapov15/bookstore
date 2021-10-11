@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { useAppDispatch } from '../redux/hooks'
-import { fetchToken } from '../redux/userSlice'
+import { fetchToken, fetchUser } from '../redux/userSlice'
 import { useHistory } from 'react-router-dom'
 import { signInReq } from '../api/signInReq'
-
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -28,6 +27,9 @@ const SignIn = () => {
     }
     dispatch(
       fetchToken()
+    )
+    dispatch(
+      fetchUser()
     )
   }
 

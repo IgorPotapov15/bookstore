@@ -29,12 +29,6 @@ const UserCard = () => {
     }
   }, [isExists])
 
-  useEffect(() => {
-    if (isAuthorized === false) {
-      history.push('/signin')
-    }
-  }, [isAuthorized])
-
   const handleChangeUserData = (e:any) => {
     switch (e.target.name) {
       case 'username':
