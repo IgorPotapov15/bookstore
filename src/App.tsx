@@ -166,7 +166,6 @@ function App() {
 
   console.log(booksList.find(item => item.id === location.pathname.split('/book/')[1]) === undefined)
 
-
   return (
       <div>
         <nav>
@@ -197,7 +196,7 @@ function App() {
                 <ul>
                 {repliesState.length > 0 ?
                   repliesState.map((item: any) => 
-                  <Link to={`/${item.book}`} key={`rl${item.id}`}>
+                  <Link to={`/book/${item.book}`} key={`rl${item.id}`} onClick={() => changeChapter(`/book/${item.id}`)}>
                     <li key={`r${item.id}`}>
                       User {item.owner} replied to you: "{item.text}"
                     </li>
