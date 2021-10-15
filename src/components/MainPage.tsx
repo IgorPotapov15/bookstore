@@ -320,7 +320,7 @@ const MainPage = () => {
             booksList.length === 0 ? <h2>Nothing found</h2> :
             booksList.map(item =>
               <li key={item.id}>
-                <Link to={`/${item.id}`}>
+                <Link to={`/book/${item.id}`}>
                   <img src={item.img} style={{width: '50px'}} />
                   {item.name}
                   <div>

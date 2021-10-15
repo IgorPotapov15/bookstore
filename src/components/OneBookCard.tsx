@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react"
-import { useHistory, useLocation } from "react-router-dom"
+import { Redirect, useHistory, useLocation } from "react-router-dom"
 import { deleteBookReq } from "../api/deleteBookReq"
 import { getOneBookReq } from "../api/getOneBookReq"
 import { postCommentReq } from "../api/postCommentReq"
-import { setChapter } from "../redux/booksSlice"
+import { fetchOneBook, setChapter } from "../redux/booksSlice"
 import { fetchComments, setBookId, setText, postComment, setReplyTo } from "../redux/commentSlice"
 import { useAppSelector, useAppDispatch } from "../redux/hooks"
 import { fetchUser } from "../redux/userSlice"
 import socket from "../socket"
+import NotMatch from "./NotMatch"
 
-
-const BookCard = ({item}: any) => {
+const OneBookCard = () => {
   const dispatch = useAppDispatch()
   const booksList = useAppSelector(state => state.books.items)
   const commentsList = useAppSelector(state => state.comments.items)
@@ -21,6 +21,7 @@ const BookCard = ({item}: any) => {
   const idState = useAppSelector(state => state.user.id)
   const isAuthorized = useAppSelector(state => state.user.isAuthorized)
   const isTokenChecking = useAppSelector(state => state.user.isTokenChecking)
+  const isBookFound = useAppSelector(state => state.books.isBookFound)
   const location = useLocation()
   const history = useHistory()
   const [comment, setComment] = useState('')
@@ -28,20 +29,19 @@ const BookCard = ({item}: any) => {
   const [replyTarget, setReplyTarget] = useState('')
   const [targetId, setTargetId] = useState('')
 
+  let item = useAppSelector(state => state.books.oneBook)
+
   useEffect(() => {
-    if (item === undefined) {
-      item = getItem()
-    }
-  }, [])
+    dispatch(fetchOneBook())
+  }, [bookId])
 
   const getItem = async () => {
-    const res = await getOneBookReq(location.pathname.split('/book/')[1])
+    const res = await dispatch(fetchOneBook())
     return res
   }
 
   useEffect(() => {
-    dispatch(setBookId(item.id))
-    
+    dispatch(setBookId(+location.pathname.split('/book/')[1]))
   }, [])
 
   useEffect(() => {
@@ -109,7 +109,9 @@ const BookCard = ({item}: any) => {
  
   return (
     <div>
-      <img src={item.img}/>
+      {isBookFound ? 
+        <div>
+          <img src={item ? item.img : ''}/>
       { item.img2 !== null ? 
         <img src={item.img2}/> :
         ''
@@ -143,8 +145,11 @@ const BookCard = ({item}: any) => {
               <button type="submit">Send comment</button>
             </form> : ''
             }
+        </div> : <NotMatch/>
+      }
+      
     </div>
   )
 }
 
-export default BookCard
+export default OneBookCard

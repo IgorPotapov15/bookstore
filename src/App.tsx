@@ -24,6 +24,8 @@ import { checkReplies, fetchReplies, fetchToken, fetchUser, sendSocket, setSocke
 import { fetchComments } from './redux/commentSlice'
 import socket from './socket'
 import { createUnparsedSourceFile } from 'typescript';
+import { getOneBookReq } from './api/getOneBookReq';
+import OneBookCard from './components/OneBookCard';
 
 function App() {
   const isAuthorized = useAppSelector(state => state.user.isAuthorized)
@@ -79,8 +81,11 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchUser())
+    // if (location.pathname.includes('book')) {
+    //   dispatch(setChapter('/book'))
+    // }
     dispatch(setChapter(location.pathname))
-    console.log(location)
+    console.log(location.pathname.split('/')[1])
   }, [])
 
   useEffect(() => {
@@ -112,7 +117,7 @@ function App() {
     if (chapter === '/') {
       setURL()
       dispatch(fetchBooks())
-    } else if(chapter !== '/') {
+    } else if (chapter !== '/') {
       dispatch(fetchBooks())
     }
   }, [page, orderState, sortState, filterByState, filterValueState, fromState, toState, chapter])
@@ -158,6 +163,8 @@ function App() {
       checkRepliesFunc()
     }
   }
+
+  console.log(booksList.find(item => item.id === location.pathname.split('/book/')[1]) === undefined)
 
 
   return (
@@ -216,14 +223,19 @@ function App() {
           <Route exact path="/">
             <MainPage/>
           </Route>
-          {
-            booksList.map(item => 
-              <Route key={item.id} path={generatePath(`/${item.id}`, { id: item.id })}>
-                <BookCard 
+          { 
+            booksList.map(item =>
+              <Route key={item.id} path={generatePath(`/book/${item.id}`, { id: item.id })}>
+                <BookCard
                   item={item}
                 />
               </Route>
             )
+          }
+          { chapter.includes('book') && ((booksList.find(item => item.id === location.pathname.split('/book/')[1]) === undefined)) ?
+            <Route path={generatePath(`/book/${location.pathname.split("/book/")[1]}`, { id: location.pathname.split('/book/')[1] })}>
+              <OneBookCard />
+            </Route> : ''
           }
         </Switch>
       </div>
