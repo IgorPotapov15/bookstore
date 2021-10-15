@@ -26,6 +26,18 @@ import socket from './socket'
 import { createUnparsedSourceFile } from 'typescript';
 import { getOneBookReq } from './api/getOneBookReq';
 import OneBookCard from './components/OneBookCard';
+import { 
+  Button, 
+  NavBar, 
+  NavUL, 
+  NavLink, 
+  MainContainer,
+  NavListItem,
+  Replies,
+  ReplyItem,
+  ReplyUL
+} from './style';
+
 
 function App() {
   const isAuthorized = useAppSelector(state => state.user.isAuthorized)
@@ -104,6 +116,10 @@ function App() {
   }, [socketState, emailState])
 
   useEffect(() => {
+    setIsRepliesShown(false)
+  }, [location])
+
+  useEffect(() => {
     socket.on('newConnection', () => {
       dispatch(setSocket(socket.id))
       console.log(socket.id)
@@ -158,6 +174,7 @@ function App() {
   const handleRepliesToggle = () => {
     if (isRepliesShown) {
       setIsRepliesShown(false)
+      checkRepliesFunc()
     } else if (!isRepliesShown) {
       setIsRepliesShown(true)
       checkRepliesFunc()
@@ -167,47 +184,51 @@ function App() {
   console.log(booksList.find(item => item.id === location.pathname.split('/book/')[1]) === undefined)
 
   return (
-      <div>
-        <nav>
-          <ul>
-            <li onClick={setURL}>
-              <Link to="/" onClick={() => changeChapter('/')}>Home</Link>
-            </li>
-            {!isTokenChecking && isAuthorized ? 
-            <li>
-            <Link to="/user" onClick={() => changeChapter('/user')}>User</Link>
-            </li> :
-              !isTokenChecking && !isAuthorized ?
-            <li>
-              <Link to="/signin" onClick={() => changeChapter('/signin')}>Sign in</Link>
-              <br/>
-              <Link to="/signup" onClick={() => changeChapter('/signup')}>Sign Up</Link>
-            </li>
-              : ''
-            }
-          </ul>
-        </nav>
-        <div>
+      <MainContainer>
+        <NavBar>
+          <NavUL>
           {!isRepliesLoading && !isUserInfoLoading && isAuthorized ? 
-            <div>
+            <NavListItem onClick={handleRepliesToggle}>
               Replies: {repliesCountState}
-              <button onClick={handleRepliesToggle}>check</button>
               {isRepliesShown ? 
-                <ul>
-                {repliesState.length > 0 ?
-                  repliesState.map((item: any) => 
-                  <Link to={`/book/${item.book}`} key={`rl${item.id}`} onClick={() => changeChapter(`/book/${item.id}`)}>
-                    <li key={`r${item.id}`}>
-                      User {item.owner} replied to you: "{item.text}"
-                    </li>
-                  </Link>
-                  )
-                  : <li>No replies...</li>
-                }
-                </ul> : ''
+                <Replies>
+                  <ReplyUL>
+                  {repliesState.length > 0 ?
+                    repliesState.map((item: any) => 
+                    <NavLink to={`/book/${item.book}`} key={`rl${item.id}`} onClick={() => changeChapter(`/book/${item.id}`)}>
+                      <ReplyItem key={`r${item.id}`} onClick={() => dispatch(fetchReplies())}>
+                        User {item.owner} replied to you: "{item.text}"
+                      </ReplyItem>
+                    </NavLink>
+                    )
+                    : <ReplyItem>No replies...</ReplyItem>
+                  }
+                  </ReplyUL>
+                </Replies> : ''
               }
-            </div> : ''
+            </NavListItem> : ''
           }
+            {!isTokenChecking && isAuthorized ?
+              <NavListItem>
+                <NavLink to="/user" onClick={() => changeChapter('/user')}>User</NavLink>
+              </NavListItem> :
+                !isTokenChecking && !isAuthorized ?
+              <NavListItem>
+                <NavLink to="/signin" onClick={() => changeChapter('/signin')}>Sign in</NavLink>
+              </NavListItem> : ''
+            }
+            {!isTokenChecking && !isAuthorized ?
+              <NavListItem>
+                <NavLink to="/signup" onClick={() => changeChapter('/signup')}>Sign Up</NavLink>
+              </NavListItem>
+                : ''
+            }
+            <NavListItem onClick={setURL}>
+              <NavLink to="/" onClick={() => changeChapter('/')}>Home</NavLink>
+            </NavListItem>
+          </NavUL>
+        </NavBar>
+        <div>
         </div>
         <Switch>
           <Route path="/user">
@@ -237,7 +258,7 @@ function App() {
             </Route> : ''
           }
         </Switch>
-      </div>
+      </MainContainer>
   );
 }
 

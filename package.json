@@ -30,6 +30,7 @@
     "reselect": "^4.0.0",
     "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.2.0",
+    "styled-components": "^5.3.1",
     "typescript": "^4.4.3",
     "web-vitals": "^1.1.2",
     "whirligig": "^1.0.0"
@@ -62,6 +63,7 @@
   "devDependencies": {
     "@types/file-saver": "^2.0.3",
     "@types/js-cookie": "^3.0.0",
-    "@types/react-router-dom": "^5.3.0"
+    "@types/react-router-dom": "^5.3.0",
+    "@types/styled-components": "^5.1.15"
   }
 }
