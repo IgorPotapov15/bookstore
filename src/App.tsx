@@ -35,7 +35,9 @@ import {
   NavListItem,
   Replies,
   ReplyItem,
-  ReplyUL
+  ReplyUL,
+  ReplyLogo,
+  Logo
 } from './style';
 
 
@@ -93,9 +95,6 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchUser())
-    // if (location.pathname.includes('book')) {
-    //   dispatch(setChapter('/book'))
-    // }
     dispatch(setChapter(location.pathname))
     console.log(location.pathname.split('/')[1])
   }, [])
@@ -166,9 +165,6 @@ function App() {
 
   const checkRepliesFunc = async () => {
     const res = await dispatch(checkReplies())
-    // if (res.payload === 'okk') {
-    //   dispatch(fetchReplies())
-    // }
   }
 
   const handleRepliesToggle = () => {
@@ -186,10 +182,11 @@ function App() {
   return (
       <MainContainer>
         <NavBar>
+          <Logo>Book Store</Logo>
           <NavUL>
           {!isRepliesLoading && !isUserInfoLoading && isAuthorized ? 
             <NavListItem onClick={handleRepliesToggle}>
-              Replies: {repliesCountState}
+              <ReplyLogo>Replies: {repliesCountState}</ReplyLogo>
               {isRepliesShown ? 
                 <Replies>
                   <ReplyUL>
