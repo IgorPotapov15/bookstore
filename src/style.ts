@@ -32,7 +32,6 @@ export const Container = styled.div<any>`
   justify-content: space-between;
   align-items: center;
   ${props => props.user && `
-    display: block;
     margin: 0 auto;
     flex-direction: column;
   `}
@@ -386,13 +385,14 @@ export const SignForm = styled.form<any>`
   position: fixed;
   top: 50%;
   left: 50%;
-  translate: translateY(-50%) translateX(-50%);
-  width: 500px;
+  transform: translateY(-50%) translateX(-50%);
+  padding: 100px 80px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border: 2px solid #cc4147;
 `
 
 export const CommentText = styled.div<any>`
@@ -410,4 +410,17 @@ export const ReplyAlert = styled.div<any>`
 
 export const UserProp = styled.p<any>`
   font-weight: 700;
+`
+
+export const InputSign = styled.input<any>`
+  width: 300px;
+  height: 30px;
+  margin-bottom: 10px;
+  border: 2px solid #cc4147;
+  border-radius: 3px;
+  font-size: 16px;
+`
+
+export const SignHeading = styled.h2<any>`
+
 `

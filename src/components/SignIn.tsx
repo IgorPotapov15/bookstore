@@ -5,7 +5,10 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { signInReq } from '../api/signInReq'
 import { setChapter } from '../redux/booksSlice'
 import {
-  SignForm
+  SignForm,
+  Button,
+  InputSign,
+  SignHeading
 } from '../style'
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -45,17 +48,18 @@ const SignIn = () => {
     <SignForm
       onSubmit={handleSubmit}
     >
-      <input 
+      <SignHeading>Sign In</SignHeading>
+      <InputSign 
         type="email" 
         onChange={handleChange}
         value={email}
         required/>
-      <input 
+      <InputSign 
         type="password"
         onChange={handleChange}
         value={password}
         required/>
-      <button type="submit">Sign In</button>
+      <Button type="submit">Sign In</Button>
     </SignForm>
   )
 }
