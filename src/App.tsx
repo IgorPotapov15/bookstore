@@ -37,7 +37,8 @@ import {
   ReplyItem,
   ReplyUL,
   ReplyLogo,
-  Logo
+  Logo,
+  ReplyInner
 } from './style';
 
 
@@ -192,9 +193,11 @@ function App() {
                   <ReplyUL>
                   {repliesState.length > 0 ?
                     repliesState.map((item: any) => 
-                    <NavLink to={`/book/${item.book}`} key={`rl${item.id}`} onClick={() => changeChapter(`/book/${item.id}`)}>
+                    <NavLink reply to={`/book/${item.book}`} key={`rl${item.id}`} onClick={() => changeChapter(`/book/${item.id}`)}>
                       <ReplyItem key={`r${item.id}`} onClick={() => dispatch(fetchReplies())}>
-                        User {item.owner} replied to you: "{item.text}"
+                        <ReplyInner>
+                          User {item.owner} replied to you: "{item.text}"
+                        </ReplyInner>
                       </ReplyItem>
                     </NavLink>
                     )

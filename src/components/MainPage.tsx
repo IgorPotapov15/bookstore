@@ -20,7 +20,14 @@ import {
   SearchForm,
   SearchInput,
   Button,
-
+  BookUL,
+  BookLink,
+  BookLI,
+  BookInner,
+  BookPropName,
+  BookDescription,
+  UpperSection,
+  LowerSection
 } from '../style'
 
 const MainPage = () => {
@@ -327,24 +334,40 @@ const MainPage = () => {
             }
           </SearchElem>
       </SearchContainer>
-        <ul>
+        <BookUL>
           {isBooksLoading ? <h1>Loading...</h1> :
             booksList.length === 0 ? <h2>Nothing found</h2> :
             booksList.map(item =>
-              <li key={item.id}>
-                <Link to={`/book/${item.id}`}>
-                  <img src={item.img} style={{width: '50px'}} />
-                  {item.name}
-                  <div>
-                    {item.genre}<br/>
-                    {item.author}<br/>
-                    €{item.price}<br/>
-                  </div>
-                </Link>
-              </li>
+              <BookLI key={item.id}>
+                <BookLink to={`/book/${item.id}`}>
+                  <img src={item.img} style={{maxWidth: '300px'}} />
+                  <BookDescription>
+                    <UpperSection>
+                      <h3>{item.name}</h3>
+                      <BookInner>
+                        <BookPropName>Genre: </BookPropName> {item.genre}
+                      </BookInner>
+                      <BookInner>
+                        <BookPropName>Author: </BookPropName> {item.author}
+                      </BookInner>
+                      <BookInner>
+                        <BookPropName>Description: </BookPropName> {item.description}
+                      </BookInner>
+                      <BookInner>
+                        <BookPropName>Rating: </BookPropName> {item.rating}
+                      </BookInner>
+                    </UpperSection>
+                    <LowerSection>
+                      <BookInner price>
+                        €{item.price}
+                      </BookInner>
+                    </LowerSection>
+                  </BookDescription>
+                </BookLink>
+              </BookLI>
             )
           }
-        </ul>
+        </BookUL>
         {!isBooksLoading ?
           <Pagination /> : ''
         }

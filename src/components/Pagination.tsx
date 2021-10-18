@@ -8,24 +8,24 @@ const Pagination = () => {
 
   const pageNumber = []
 
-  for (let i = 1; i <= Math.ceil(totalItems / 5); i++) {
+  for (let i = 1; i <= Math.ceil(totalItems / 9); i++) {
 		pageNumber.push(i);
 	}
 
   let showStart
 	let showEnd
 
-  if (pageNumber.length > 5) {
+  if (pageNumber.length > 9) {
 		if (pageNumber.indexOf(page) > 2) {
 			showStart = page - 3;
 			showEnd = page + 2;
 		} else {
 			showStart = 0;
-			showEnd = 5;
+			showEnd = 9;
 		}
 	
 		if (pageNumber.lastIndexOf(page) > pageNumber.length - 4) {
-			showStart = pageNumber.length - 5;
+			showStart = pageNumber.length - 9;
 			showEnd = pageNumber.length;
 		}
 	}
