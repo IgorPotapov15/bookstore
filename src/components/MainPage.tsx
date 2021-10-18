@@ -27,7 +27,8 @@ import {
   BookPropName,
   BookDescription,
   UpperSection,
-  LowerSection
+  LowerSection,
+  BooksContainer
 } from '../style'
 
 const MainPage = () => {
@@ -209,7 +210,7 @@ const MainPage = () => {
   }
   
   return (
-    <div>
+    <BooksContainer>
       <h1>Main Page</h1>
       <SearchContainer>
         <SearchElem>
@@ -371,7 +372,7 @@ const MainPage = () => {
         {!isBooksLoading ?
           <Pagination /> : ''
         }
-    </div>
+    </BooksContainer>
   )
 }
 

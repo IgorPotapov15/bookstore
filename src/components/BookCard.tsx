@@ -8,6 +8,26 @@ import { fetchComments, setBookId, setText, postComment, setReplyTo } from "../r
 import { useAppSelector, useAppDispatch } from "../redux/hooks"
 import { fetchUser } from "../redux/userSlice"
 import socket from "../socket"
+import {
+  Preview,
+  BookImg,
+  BookImages,
+  BookInfo,
+  BookContainer,
+  MainImg,
+  PreviewContainer,
+  BookInner,
+  BookPropName,
+  Button,
+  CommentInput,
+  CommentsUL,
+  CommentLI,
+  CommentsContainer,
+  CommentOwner,
+  CommentText,
+  CommentsForm,
+  ReplyAlert
+} from "../style"
 
 
 const BookCard = ({item}: any) => {
@@ -27,6 +47,7 @@ const BookCard = ({item}: any) => {
   const [reply, setReply] = useState(false)
   const [replyTarget, setReplyTarget] = useState('')
   const [targetId, setTargetId] = useState('')
+  const [photo, setPhoto] = useState(1)
 
   useEffect(() => {
     if (item === undefined) {
@@ -95,6 +116,11 @@ const BookCard = ({item}: any) => {
       setReplyTarget(owner)
       setTargetId(ownerId)
       dispatch(setReplyTo(ownerId))
+    } else if (reply) {
+      setReply(false)
+      setReplyTarget('')
+      setTargetId('')
+      dispatch(setReplyTo(''))
     }
   }
 
@@ -106,43 +132,92 @@ const BookCard = ({item}: any) => {
       dispatch(setReplyTo(''))
     }
   }
+
+  const handleChangePhoto = (img: number) => {
+    setPhoto(img)
+  }
  
   return (
     <div>
-      <img src={item.img}/>
-      { item.img2 !== null ? 
-        <img src={item.img2}/> :
-        ''
-      }      
-      <h2>{item.name}</h2>
-      <p>{item.description}</p>
-      {role === 'Admin' ? 
-        <button
-          onClick={handleDelete}
-        >Delete this book</button> :
-        ''
-      }
-      Comments:
-      <ul>
-        {
-          commentsList.map(item =>
-            <li key={item.id}>
-              {item.owner}: {item.text}
-            {idState !== item.ownerId && item.ownerId !== null ?
-              <button onClick={() => handleReplyOn(item.ownerId, item.owner)}>Reply</button> : ''
+      <BookContainer>
+        <BookImages>
+          <MainImg>
+            { photo === 1 ? <BookImg src={item.img}/> :
+              photo === 2 && item.img !== null ? <BookImg src={item.img2}/>
+              : ''
             }
-            </li>
-          )
+          </MainImg>
+          <PreviewContainer>
+            <Preview
+              src={item.img} 
+              active={photo === 1 ? true : false}
+              onClick={() => handleChangePhoto(1)}
+            />
+            { item.img2 !== null ? 
+            <Preview 
+              src={item.img2} 
+              active={photo === 2 ? true : false}
+              onClick={() => handleChangePhoto(2)}
+            /> :
+            ''
+            }
+          </PreviewContainer>
+        </BookImages>
+        <BookInfo>
+          <h2>{item.name}</h2>
+            <BookInner>
+              <BookPropName>Genre: </BookPropName> {item.genre}
+            </BookInner>
+            <BookInner>
+              <BookPropName>Author: </BookPropName> {item.author}
+            </BookInner>
+            <BookInner>
+              <BookPropName>Description: </BookPropName> {item.description}
+            </BookInner>
+            <BookInner>
+              <BookPropName>Rating: </BookPropName> {item.rating}
+            </BookInner>
+        </BookInfo>
+      </BookContainer>
+      <CommentsContainer>
+        Comments:
+        <CommentsUL>
+          {
+            commentsList.map(item =>
+              <CommentLI key={item.id}>
+                <CommentOwner>
+                  User {item.owner} commented:
+                </CommentOwner>
+                <CommentText>
+                  {item.text}
+                </CommentText>
+                  {idState !== item.ownerId && item.ownerId !== null ?
+                <Button onClick={() => handleReplyOn(item.ownerId, item.owner)}>Reply</Button> : ''
+              }
+              </CommentLI>
+            )
+          }
+        </CommentsUL>
+        {!isTokenChecking && isAuthorized ? 
+          <CommentsForm onSubmit={handleSubmitComment}>
+            {reply ? 
+              <ReplyAlert>
+                Replying to {replyTarget}
+                <Button onClick={handleReplyOff}>Cancel</Button>
+              </ReplyAlert> :
+              <ReplyAlert></ReplyAlert>
+            }
+            <CommentInput type="text" onChange={handleChangeComment} value={comment}/>
+            <Button type="submit">Send comment</Button>
+          </CommentsForm> : ''
         }
-      </ul>
-      {!isTokenChecking && isAuthorized ? 
-            <form onSubmit={handleSubmitComment}>
-              {reply ? `Replying to ${replyTarget}` : ''}
-              {reply ? <button onClick={handleReplyOff}>[X]</button> : ''}
-              <input type="text" onChange={handleChangeComment} value={comment}/>
-              <button type="submit">Send comment</button>
-            </form> : ''
-            }
+        {role === 'Admin' ? 
+          <Button
+            onClick={handleDelete}
+          >Delete this book</Button> :
+          ''
+        }
+      </CommentsContainer>
     </div>
   )
 }

@@ -38,7 +38,8 @@ import {
   ReplyUL,
   ReplyLogo,
   Logo,
-  ReplyInner
+  ReplyInner,
+  Container
 } from './style';
 
 
@@ -183,6 +184,7 @@ function App() {
   return (
       <MainContainer>
         <NavBar>
+          <Container>
           <Logo>Book Store</Logo>
           <NavUL>
           {!isRepliesLoading && !isUserInfoLoading && isAuthorized ? 
@@ -227,9 +229,8 @@ function App() {
               <NavLink to="/" onClick={() => changeChapter('/')}>Home</NavLink>
             </NavListItem>
           </NavUL>
+          </Container>
         </NavBar>
-        <div>
-        </div>
         <Switch>
           <Route path="/user">
             {!isAuthorized ? <Redirect to="/signin"/> : <UserCard />}

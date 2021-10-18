@@ -4,15 +4,15 @@ import { Link } from 'react-router-dom'
 export const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
   body {
+    box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
   }
-  box-sizing: border-box;
+  ul {
+    padding: 0;
+  }
 ` 
 
 export const Logo = styled.span<any>`
-  position: fixed;
-  top: 21px;
-  left: 25px;
   color: #ffffff;
   font-size: 24px;
   font-weight: 700;
@@ -22,6 +22,15 @@ export const Logo = styled.span<any>`
 
 export const MainContainer = styled.div<any>`
   margin-top: 80px;
+`
+
+export const Container = styled.div<any>`
+  max-width: 1600px;
+  padding: 0 20px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 
 export const NavBar = styled.nav<any>`
@@ -129,7 +138,13 @@ export const Button = styled.button<any>`
   `}
 `
 
+export const BooksContainer = styled.div<any>`
+    max-width: 1600px;
+    margin: 0 auto;
+`
+
 export const SearchContainer = styled.div<any>`
+  padding: 0 20px;
   display: flex;
   position: relative;
   &:after {
@@ -191,10 +206,7 @@ export const SearchInput = styled.input<any>`
 `
 
 export const BookUL = styled.ul<any>`
-  width: 90vw;
-  margin: 0 auto;
   margin-top: 40px;
-  padding-left: 20px;
   list-style: none;
   display: flex;
   flex-wrap: wrap;
@@ -204,6 +216,7 @@ export const BookUL = styled.ul<any>`
 
 export const BookLink = styled(Link)<any>`
   display: flex;
+  padding-right: 15px;
   justify-content: center;
   text-decoration: none;
   color: #000000
@@ -248,4 +261,128 @@ export const LowerSection = styled.div<any>`
   margin-bottom: 10px;
   display: flex;
   justify-content: flex-end;
+`
+
+export const Footer = styled.footer<any>`
+  margin-top: 50px;
+`
+
+export const PagesUL = styled.ul<any>`
+  display: flex;
+  justify-content: center;
+  list-style: none;
+`
+
+export const PagesLI = styled.li<any>`
+  padding: 5px;
+  border: 1px solid rgba(204, 65, 71, 0.4);
+  border-radius: 3px;
+  cursor: pointer;
+  &:not(:last-child) {
+    margin-right: 5px;
+  }
+  ${props => props.active && `
+    background: rgba(204, 65, 71, 0.4);
+  `}
+`
+
+export const Preview = styled.img<any>`
+  max-width: 50px;
+  cursor: pointer;
+  &:first-child {
+    margin-right: 5px;
+  }
+  ${props => props.active && `
+    border: 2px solid #cc4147;
+    border-radius: 3px;
+  `}
+`
+
+export const PreviewContainer = styled.div<any>`
+  min-height: 60px;
+`
+
+export const BookImg = styled.img<any>`
+  max-height: 450px;
+  max-width: 570px;
+`
+
+export const MainImg = styled.div<any>`
+  height: 500px;
+`
+
+export const BookImages = styled.div<any>`
+  margin-right: 50px;
+`
+
+export const BookInfo = styled.div<any>`
+  min-width: 400px;
+`
+
+export const BookContainer = styled.div<any>`
+  display: flex;
+  justify-content: center;
+`
+
+export const CommentInput = styled.input<any>`
+  width: 300px;
+  margin-right: 3px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  padding: 5px 5px;
+  border: 2px solid #cc4147;
+  border-radius: 3px;
+`
+
+export const CommentLI = styled.li<any>`
+  width: 500px;
+  min-height: 20px;
+  padding: 5px 5px;
+  border: 1px solid rgba(204, 65, 71, 0.4);
+  border-radius: 3px;
+  word-break: break-all;
+  &:not(:last-child) {
+    margin-bottom: 5px;
+  }
+`
+
+export const CommentsUL = styled.ul<any>`
+  list-style: none;
+`
+
+export const CommentsContainer = styled.div<any>`
+  margin-bottom: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+export const CommentOwner = styled.div<any>`
+  padding-bottom: 10px;
+  position: relative;
+  font-weight: 700;
+  color: rgb(139 45 45);
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 95%;
+    height: 1px;
+    background: #cc4147;
+    opacity: 0.4;
+  }
+`
+
+export const CommentText = styled.div<any>`
+  min-height: 50px;
+  margin-bottom: 10px;
+`
+
+export const CommentsForm = styled.form<any>`
+  
+`
+
+export const ReplyAlert = styled.div<any>`
+  min-height: 33px
 `

@@ -1,5 +1,10 @@
 import { prevPage, nextPage, setPage } from "../redux/booksSlice"
 import { useAppDispatch, useAppSelector } from "../redux/hooks"
+import {
+	Footer,
+	PagesUL,
+	PagesLI
+} from '../style'
 
 const Pagination = () => {
   const totalItems = useAppSelector(state => state.books.totalItems)
@@ -31,32 +36,32 @@ const Pagination = () => {
 	}
 
   return(
-    <footer>
-				<ul>
+    <Footer>
+				<PagesUL>
 					{
 						(page > 1) &&
-						<li onClick={() => dispatch(prevPage())}>
-							<a>{'<<'}</a>
-						</li>
+						<PagesLI onClick={() => dispatch(prevPage())}>
+							<span>{'<'}</span>
+						</PagesLI>
 					}
 					{
 						pageNumber.slice(showStart, showEnd).map(number => (
-							<li className={`${number === page ? 'page-active' : ''}`} key={number} onClick={() => dispatch(setPage(number))}>
-								<a className={`${number === page ? 'page-link-active' : ''}`}
+							<PagesLI active={number === +page ? true : false} key={number} onClick={() => dispatch(setPage(number))}>
+								<span className={`${number === page ? 'page-link-active' : ''}`}
 								>
 									{number}
-								</a>
-							</li>
+								</span>
+							</PagesLI>
 						))
 					}
 					{
 						(page < pageNumber.length) &&
-						<li onClick={() => dispatch(nextPage())}>
-							<a>{'>>'}</a>
-						</li>
+						<PagesLI onClick={() => dispatch(nextPage())}>
+							<span>{'>'}</span>
+						</PagesLI>
 					}
-				</ul>
-			</footer>
+				</PagesUL>
+			</Footer>
   )
 
 }
