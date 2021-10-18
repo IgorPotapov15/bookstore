@@ -4,7 +4,9 @@ import { fetchToken, fetchUser } from '../redux/userSlice'
 import { useHistory, useLocation } from 'react-router-dom'
 import { signInReq } from '../api/signInReq'
 import { setChapter } from '../redux/booksSlice'
-
+import {
+  SignForm
+} from '../style'
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -40,7 +42,7 @@ const SignIn = () => {
   }
 
   return (
-    <form
+    <SignForm
       onSubmit={handleSubmit}
     >
       <input 
@@ -54,7 +56,7 @@ const SignIn = () => {
         value={password}
         required/>
       <button type="submit">Sign In</button>
-    </form>
+    </SignForm>
   )
 }
 

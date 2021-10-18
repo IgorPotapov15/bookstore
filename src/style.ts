@@ -31,6 +31,11 @@ export const Container = styled.div<any>`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  ${props => props.user && `
+    display: block;
+    margin: 0 auto;
+    flex-direction: column;
+  `}
 `
 
 export const NavBar = styled.nav<any>`
@@ -134,6 +139,9 @@ export const Button = styled.button<any>`
     }
   `}
   ${props => props.search && `
+    margin-left: 5px;
+  `}
+  ${props => props.user && `
     margin-left: 5px;
   `}
 `
@@ -374,6 +382,19 @@ export const CommentOwner = styled.div<any>`
   }
 `
 
+export const SignForm = styled.form<any>`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  translate: translateY(-50%) translateX(-50%);
+  width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
 export const CommentText = styled.div<any>`
   min-height: 50px;
   margin-bottom: 10px;
@@ -385,4 +406,8 @@ export const CommentsForm = styled.form<any>`
 
 export const ReplyAlert = styled.div<any>`
   min-height: 33px
+`
+
+export const UserProp = styled.p<any>`
+  font-weight: 700;
 `

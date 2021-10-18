@@ -6,6 +6,11 @@ import { editUserReq } from '../api/editUserReq'
 import { useEffect, useState } from 'react'
 import AdminForm from './AdminForm'
 import { setChapter } from '../redux/booksSlice'
+import { 
+  Button,
+  Container,
+  UserProp
+} from '../style'
 
 const UserCard = () => {
   const [isAdminShown, setIsAdminShown] = useState(false)
@@ -91,29 +96,33 @@ const UserCard = () => {
     isAdminShown ? setIsAdminShown(false) : setIsAdminShown(true)
   }
 
+
   return (
-    <div>
+    <Container user>
       <h1>User Page</h1>
+      <UserProp>Your username:</UserProp>
       <p>{username}</p>
-      
-      <button
+      <Button
         name="username"
         onClick={handleChangeUserData}
-      >Change username</button>
-      <button
+      >Change username</Button>
+      <Button
+        user
         name="password"
         onClick={handleChangeUserData}
-      >Change password</button>
+      >Change password</Button>
+      <UserProp>Your email:</UserProp>
       <p>{email}</p>
-      <button
+      <Button
         name="email"
         onClick={handleChangeUserData}
-      >Change email</button>
+      >Change email</Button>
+      <UserProp>Date of birth:</UserProp>
       <p>{dob}</p>
-      <button
+      <Button
         name="dob"
         onClick={handleChangeUserData}
-      >Change date of birth</button>
+      >Change date of birth</Button>
       {targetField ?
         (targetField === 'username' ?
         <input type="text" 
@@ -143,18 +152,20 @@ const UserCard = () => {
         onBlur={handleBlur}
         onKeyUp={handleSubmit}/>) : ''
       }
+      <UserProp>Your role:</UserProp>
       <p>{role}</p>
       { role === 'Admin' ? 
-        <button
+        <Button
           onClick={handleAdmin}
-        >Admin Card</button> :
+        >Admin Card</Button> :
         ''
       }
-      <button
+      <Button
         onClick={handleSignOut}
-      >Sign out</button>
+        user
+      >Sign out</Button>
       { isAdminShown ? <AdminForm /> : ''}
-    </div>
+    </Container>
   )
 }
 
