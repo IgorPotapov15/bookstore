@@ -1,5 +1,14 @@
-import { useState, useRef } from "react";
-import { postBookReq } from "../api/postBookReq";
+import { useState, useRef } from "react"
+import { postBookReq } from "../api/postBookReq"
+import {
+  AdminFormContainer, 
+  AdminInput,
+  Button,
+  AdminCardHeading,
+  AdminCardDescription,
+  BookProp,
+  AdminCardSelect
+} from '../style'
 
 const AdminForm = () => {
   const [name, setName] = useState('')
@@ -32,7 +41,6 @@ const AdminForm = () => {
     reader.onloadend = () => {
       const uint8Array = new Uint8Array(reader.result as any)
       setLoading(true)
-      // fetchData(uint8Array, uint8Array2)
       if (fileRef2.current) {
         nextImage(uint8Array)
       } else if (!fileRef2.current) {
@@ -72,78 +80,77 @@ const AdminForm = () => {
   }
 
   return(
-    <form onSubmit={handleSubmit}>
-          <div>
-            name
-            <input 
-              type="text" 
-              name="name" 
-              onChange={handleChange} 
-              value={name}
-              required
-            />
-            description
-            <input 
-              type="text" 
-              name="description" 
-              onChange={handleChange} 
-              value={description}
-              required
-            />
-            genre
-            <select name="genre" required onChange={handleChange} value={genre}>
-              <option value=""></option>
-              <option value="Classics">Classics</option>
-              <option value="Detective">Detective</option>
-              <option value="Fantasy">Fantasy</option>
-              <option value="Horror">Horror</option>
-              <option value="Science">Science</option>
-            </select>
-            author
-            <input 
-              type="text" 
-              name="author" 
-              onChange={handleChange} 
-              value={author}
-              required
-            />
-            rating
-            <input 
-              type="number"
-              name="rating"
-              min="0.1"
-              step="0.01"
-              onChange={handleChange} 
-              value={rating}
-              required
-            />
-            price
-            <input 
-              type="number" 
-              name="price"
-              min="1"
-              step="0.01"
-              onChange={handleChange} 
-              value={price}
-              required
-            />
-            cover
-            <input
-              onChange={e => fileRef.current = e.target.files}
-              accept="image/*"
-              type="file"
-              id="button-file"
-              required
-            />
-            <input
-              onChange={e => fileRef2.current = e.target.files}
-              accept="image/*"
-              type="file"
-              id="button-file2"
-            />
-          </div>
-          <button type="submit">{loading ? 'Сохраняю...' : 'Сохранить'}</button>
-        </form>
+    <AdminFormContainer onSubmit={handleSubmit}>
+      <AdminCardHeading>New book</AdminCardHeading>
+      <AdminInput 
+        type="text" 
+        name="name"
+        placeholder="Name"
+        onChange={handleChange} 
+        value={name}
+        required
+      />
+      <AdminCardDescription 
+        type="text" 
+        name="description"
+        placeholder="Description"
+        onChange={handleChange} 
+        value={description}
+        required
+      />
+      <BookProp>Genre:</BookProp>
+      <AdminCardSelect name="genre" required onChange={handleChange} value={genre}>
+        <option value=""></option>
+        <option value="Classics">Classics</option>
+        <option value="Detective">Detective</option>
+        <option value="Fantasy">Fantasy</option>
+        <option value="Horror">Horror</option>
+        <option value="Science">Science</option>
+      </AdminCardSelect>
+      <AdminInput
+        placeholder="Author"
+        type="text" 
+        name="author" 
+        onChange={handleChange} 
+        value={author}
+        required
+      />
+      <AdminInput 
+        type="number"
+        name="rating"
+        min="0.1"
+        step="0.01"
+        onChange={handleChange} 
+        value={rating}
+        required
+      />
+      <BookProp>Price:</BookProp>
+      <AdminInput 
+        type="number" 
+        name="price"
+        min="1"
+        step="0.01"
+        onChange={handleChange} 
+        value={price}
+        required
+      />
+      <BookProp>Cover:</BookProp>
+      <AdminInput
+        onChange={(e: any) => fileRef.current = e.target.files}
+        accept="image/*"
+        type="file"
+        id="button-file"
+        required
+      />
+      <BookProp>Text sample (optional):</BookProp>
+      <AdminInput
+        onChange={(e: any) => fileRef2.current = e.target.files}
+        accept="image/*"
+        type="file"
+        id="button-file2"
+      />
+      <Button type="submit">{loading ? 'Saving...' : 'Save'}</Button>
+    </AdminFormContainer>
   )
 }
 

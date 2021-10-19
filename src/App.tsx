@@ -179,8 +179,6 @@ function App() {
     }
   }
 
-  console.log(booksList.find(item => item.id === location.pathname.split('/book/')[1]) === undefined)
-
   return (
       <MainContainer>
         <NavBar>

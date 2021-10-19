@@ -470,3 +470,52 @@ export const SignError = styled.div<any>`
   color: #cc4147;
   font-weight: 700;
 `
+
+export const AdminFormContainer = styled.form<any>`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin-top: 75px;
+  margin-left: 50px;
+  border: 2px solid #cc4147;
+  border-radius: 3px;
+`
+
+export const AdminInput = styled.input<any>`
+  font-size: 16px;
+  margin-bottom: 10px;
+  padding: 5px 5px;
+  border: 2px solid #cc4147;
+  border-radius: 3px;
+  outline: none;
+`
+
+export const AdminCardHeading = styled.h2<any>`
+  margin: 5px auto 20px;
+`
+
+export const AdminCardDescription = styled.textarea<any>`
+  height: 100px;
+  resize: none;
+  font-size: 12px;
+  margin-bottom: 10px;
+  padding: 5px 5px;
+  border: 2px solid #cc4147;
+  border-radius: 3px;
+  outline: none;
+`
+
+export const BookProp = styled.p<any>`
+  margin-top: 0;
+  margin-bottom: 5px;
+`
+
+export const AdminCardSelect = styled.select<any>`
+  font-size: 16px;
+  margin-bottom: 10px;
+  padding: 5px 5px;
+  border: 2px solid #cc4147;
+  border-radius: 3px;
+  outline: none;
+  background: transparent;
+`

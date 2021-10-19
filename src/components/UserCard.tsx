@@ -47,6 +47,7 @@ const UserCard = () => {
   }
 
   const handleChangeUserData = (e:any) => {
+    setIsAdminShown(false)
     setError('')
     switch (e.target.name) {
       case 'username':
@@ -103,6 +104,7 @@ const UserCard = () => {
   }
 
   const handleAdmin = () => {
+    handleCancel()
     isAdminShown ? setIsAdminShown(false) : setIsAdminShown(true)
   }
 
