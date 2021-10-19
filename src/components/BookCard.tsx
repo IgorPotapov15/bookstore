@@ -19,7 +19,7 @@ import {
   BookInner,
   BookPropName,
   Button,
-  CommentInput,
+  CommentTextArea,
   CommentsUL,
   CommentLI,
   CommentsContainer,
@@ -198,17 +198,17 @@ const BookCard = ({item}: any) => {
             )
           }
         </CommentsUL>
-        {!isTokenChecking && isAuthorized ? 
+        {reply ? 
+          <ReplyAlert>
+            Replying to {replyTarget}
+            <Button onClick={handleReplyOff}>Cancel</Button>
+          </ReplyAlert> :
+          <ReplyAlert></ReplyAlert>
+        }
+        {!isTokenChecking && isAuthorized ?
           <CommentsForm onSubmit={handleSubmitComment}>
-            {reply ? 
-              <ReplyAlert>
-                Replying to {replyTarget}
-                <Button onClick={handleReplyOff}>Cancel</Button>
-              </ReplyAlert> :
-              <ReplyAlert></ReplyAlert>
-            }
-            <CommentInput type="text" onChange={handleChangeComment} value={comment}/>
-            <Button type="submit">Send comment</Button>
+            <CommentTextArea placeholder="Your comment..." type="text" onChange={handleChangeComment} value={comment}/>
+            <Button primary type="submit">Send comment</Button>
           </CommentsForm> : ''
         }
         {role === 'Admin' ? 

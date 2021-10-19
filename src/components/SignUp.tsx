@@ -5,6 +5,13 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { signUpReq } from '../api/signUpReq'
 import { useEffect } from 'react'
 import { setChapter } from '../redux/booksSlice'
+import {
+  SignForm,
+  Button,
+  InputSign,
+  SignHeading,
+  SignError
+} from '../style'
 
 const SignUp = () => {
   const [email, setEmail] = useState('')
@@ -47,38 +54,41 @@ const SignUp = () => {
   }
 
   return (
-    <form
+    <SignForm
       onSubmit={handleSubmit}
     >
-      <input 
+      <SignHeading>Sign Up</SignHeading>
+      <InputSign 
         type="email" 
         onChange={handleChange}
         value={email}
         required
         placeholder="Email"
       />
-      <input 
+      <InputSign 
         type="password"
         onChange={handleChange}
         value={password}
         required
         placeholder="Password"
       />
-      <input 
+      <InputSign 
         type="text"
         onChange={handleChange}
         value={username}
         required
         placeholder="Username"
       />
-      <input 
+      <InputSign
+        date 
         type="date"
         onChange={handleChange}
         value={date}
         required
       />
-      <button type="submit">Sign Up</button>
-    </form>
+      <Button primary sign type="submit">Sign Up</Button>
+    <SignError></SignError>
+    </SignForm>
   )
 }
 

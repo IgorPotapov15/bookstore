@@ -32,9 +32,40 @@ export const Container = styled.div<any>`
   justify-content: space-between;
   align-items: center;
   ${props => props.user && `
-    margin: 0 auto;
-    flex-direction: column;
+    align-items: flex-start;
+    flex-direction: row;
+    justify-content: start;
   `}
+`
+
+export const UserChangeForm = styled.form<any>`
+  margin-top: 75px;
+  margin-left: 50px;
+  border: 2px solid #cc4147;
+  border-radius: 3px;
+  padding: 10px;
+`
+
+export const InputChange = styled.input<any>`
+  font-size: 16px;
+  padding: 5px 5px;
+  border: 2px solid #cc4147;
+  border-radius: 3px;
+  outline: none;
+`
+
+export const ErrorAlert = styled.div<any>`
+  max-width: 200px;
+  min-height: 20px;
+  margin: 10px 0;
+  color: #cc4147;
+  font-size: 12px;
+  font-weight: 700;
+  word-break: break-all;
+`
+
+export const ChangeButtons = styled.div<any>`
+  padding: 5px;
 `
 
 export const NavBar = styled.nav<any>`
@@ -45,9 +76,11 @@ export const NavBar = styled.nav<any>`
   z-index: 1000;
   background: linear-gradient(0deg, rgba(139,45,45,1) 0%, rgba(204,65,71,1) 100%);
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  user-select: none;
 `
 
 export const NavUL = styled.ul<any>`
+  position: relative;
   display: flex;
   justify-content: flex-end;
   padding: 10px 5px;
@@ -77,9 +110,9 @@ export const NavListItem = styled.li<any>`
 `
 
 export const Replies = styled.div<any>`
-  position: fixed;
-  top: 70px;
-  right: 50px;
+  position: absolute;
+  top: 54px;
+  right: 145px;
   background: linear-gradient(0deg, rgba(139,45,45,1) 0%, rgba(204,65,71,1) 100%);
   border-radius: 3px;
 `
@@ -142,6 +175,9 @@ export const Button = styled.button<any>`
   `}
   ${props => props.user && `
     margin-left: 5px;
+  `}
+  ${props => props.sign && `
+    margin-top: 30px;
   `}
 `
 
@@ -331,14 +367,15 @@ export const BookContainer = styled.div<any>`
   justify-content: center;
 `
 
-export const CommentInput = styled.input<any>`
-  width: 300px;
+export const CommentTextArea = styled.textarea<any>`
+  width: 375px;
+  height: 50px;
   margin-right: 3px;
-  margin-bottom: 15px;
   font-size: 16px;
   padding: 5px 5px;
   border: 2px solid #cc4147;
   border-radius: 3px;
+  resize: none;
 `
 
 export const CommentLI = styled.li<any>`
@@ -386,11 +423,9 @@ export const SignForm = styled.form<any>`
   top: 50%;
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
-  padding: 100px 80px;
-  margin: 0 auto;
+  padding: 60px 80px 40px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   border: 2px solid #cc4147;
 `
@@ -401,7 +436,8 @@ export const CommentText = styled.div<any>`
 `
 
 export const CommentsForm = styled.form<any>`
-  
+  display: flex;
+  margin-bottom: 40px;
 `
 
 export const ReplyAlert = styled.div<any>`
@@ -419,8 +455,18 @@ export const InputSign = styled.input<any>`
   border: 2px solid #cc4147;
   border-radius: 3px;
   font-size: 16px;
+  ${props => props.date && `
+    width: 150px;
+  `}
 `
 
 export const SignHeading = styled.h2<any>`
 
+`
+
+export const SignError = styled.div<any>`
+  margin-top: 30px;
+  min-height: 20px;
+  color: #cc4147;
+  font-weight: 700;
 `

@@ -8,7 +8,8 @@ import {
   SignForm,
   Button,
   InputSign,
-  SignHeading
+  SignHeading,
+  SignError
 } from '../style'
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -59,7 +60,8 @@ const SignIn = () => {
         onChange={handleChange}
         value={password}
         required/>
-      <Button type="submit">Sign In</Button>
+      <Button primary sign type="submit">Sign In</Button>
+      <SignError></SignError>
     </SignForm>
   )
 }

@@ -9,12 +9,18 @@ import { setChapter } from '../redux/booksSlice'
 import { 
   Button,
   Container,
-  UserProp
+  UserProp,
+  UserChangeForm,
+  InputChange,
+  ChangeButtons,
+  ErrorAlert
 } from '../style'
 
 const UserCard = () => {
   const [isAdminShown, setIsAdminShown] = useState(false)
-  const [targetField, setTargetField] = useState('');
+  const [targetField, setTargetField] = useState('')
+  const [inputValue, setInputValue] = useState('')
+  const [error, setError] = useState('');
   const dispatch = useAppDispatch()
   const location = useLocation()
   const username = useAppSelector(state => state.user.username)
@@ -36,7 +42,12 @@ const UserCard = () => {
     }
   }, [isExists])
 
+  const handleChange = (e:any) => {
+    setInputValue(e.currentTarget.value)
+  }
+
   const handleChangeUserData = (e:any) => {
+    setError('')
     switch (e.target.name) {
       case 'username':
         setTargetField('username')
@@ -54,34 +65,33 @@ const UserCard = () => {
   }
 
   const handleSubmit = async (e:any) => {
+    e.preventDefault()
+    console.log(e)
     let res
-    if (e.key === 'Enter') {        
-      if (e.currentTarget.name === 'username-input') {
-        res = await editUserReq('username', e.currentTarget.value)
+      if (e.target.id === 'username-button') {
+        res = await editUserReq('username', inputValue)
       }
-      else if (e.currentTarget.name === 'email-input') {
-        res = await editUserReq('email', e.currentTarget.value)
+      else if (e.target.id === 'email-button') {
+        res = await editUserReq('email', inputValue)
       }
-      else if (e.currentTarget.name === 'password-input') {
-        res = await editUserReq('password', e.currentTarget.value)
+      else if (e.target.id === 'password-button') {
+        res = await editUserReq('password', inputValue)
       }
-      else if (e.currentTarget.name === 'dob-input') {
-        res = await editUserReq('dob', e.currentTarget.value)
+      else if (e.target.id === 'dob-button') {
+        res = await editUserReq('dob', inputValue)
       }
-      setTargetField('')
-      }
+      setInputValue('')
       if (res && res.status === 200) {
+        setTargetField('')
+        setError('')
         dispatch(fetchUser())
       } else if (res) {
-        console.log(res)
+        setError(res)
       }
-      
-    if (e.key === 'Escape') {
-			setTargetField('')
-		}
   }
 
-  const handleBlur = () => {
+  const handleCancel = () => {
+    setInputValue('')
     setTargetField('')
   }
 
@@ -99,6 +109,7 @@ const UserCard = () => {
 
   return (
     <Container user>
+      <div>
       <h1>User Page</h1>
       <UserProp>Your username:</UserProp>
       <p>{username}</p>
@@ -123,35 +134,6 @@ const UserCard = () => {
         name="dob"
         onClick={handleChangeUserData}
       >Change date of birth</Button>
-      {targetField ?
-        (targetField === 'username' ?
-        <input type="text" 
-        placeholder="username"
-        name="username-input"
-        autoFocus 
-        onBlur={handleBlur}
-        onKeyUp={handleSubmit}/> :
-        targetField === 'email' ?
-        <input type="text" 
-        placeholder="email"
-        name="email-input"
-        autoFocus 
-        onBlur={handleBlur}
-        onKeyUp={handleSubmit}/> :
-        targetField === 'password' ?
-        <input type="text" 
-        placeholder="password"
-        name="password-input"
-        autoFocus
-        onBlur={handleBlur}
-        onKeyUp={handleSubmit}/> :
-        <input type="date" 
-        placeholder="dob"
-        name="dob-input"
-        autoFocus 
-        onBlur={handleBlur}
-        onKeyUp={handleSubmit}/>) : ''
-      }
       <UserProp>Your role:</UserProp>
       <p>{role}</p>
       { role === 'Admin' ? 
@@ -163,8 +145,79 @@ const UserCard = () => {
       <Button
         onClick={handleSignOut}
         user
-      >Sign out</Button>
-      { isAdminShown ? <AdminForm /> : ''}
+      >Sign out</Button>  
+      </div>
+      {targetField ?
+        (targetField === 'username' ?
+        <UserChangeForm>
+          <p>New username:</p>
+          <InputChange
+            value={inputValue}
+            onChange={handleChange}
+            type="text" 
+            placeholder="username"
+            name="username-input"
+            autoFocus 
+          />
+          <ChangeButtons>
+            <Button type="submit" id="username-button" primary onClick={handleSubmit}>Submit</Button>
+            <Button user onClick={handleCancel}>Cancel</Button>
+          </ChangeButtons>
+          <ErrorAlert>{error}</ErrorAlert>
+        </UserChangeForm> :
+        targetField === 'email' ?
+        <UserChangeForm>
+          <p>New email:</p>
+          <InputChange 
+            value={inputValue}
+            onChange={handleChange}
+            type="text" 
+            placeholder="email"
+            name="email-input"
+            autoFocus 
+          />
+          <ChangeButtons>
+            <Button type="submit" id="email-button" primary onClick={handleSubmit}>Submit</Button>
+            <Button user onClick={handleCancel}>Cancel</Button>
+          </ChangeButtons>
+          <ErrorAlert>{error}</ErrorAlert>
+        </UserChangeForm> :
+        targetField === 'password' ?
+        <UserChangeForm>
+          <p>New password:</p>
+          <InputChange
+            value={inputValue}
+            onChange={handleChange}
+            type="text" 
+            placeholder="password"
+            name="password-input"
+            autoFocus
+          />
+          <ChangeButtons>
+            <Button type="submit" id="password-button" primary onClick={handleSubmit}>Submit</Button>
+            <Button user onClick={handleCancel}>Cancel</Button>
+          </ChangeButtons>
+          <ErrorAlert>{error}</ErrorAlert>
+        </UserChangeForm> :
+        <UserChangeForm>
+        <p>New Date of birth:</p>
+        <InputChange 
+          value={inputValue}
+          onChange={handleChange}
+          type="date" 
+          date
+          placeholder="dob"
+          name="dob-input"
+          autoFocus 
+        />
+        <ChangeButtons>
+          <Button type="submit" id="dob-button" primary onClick={handleSubmit}>Submit</Button>
+          <Button user onClick={handleCancel}>Cancel</Button>
+        </ChangeButtons>
+        <ErrorAlert>{error}</ErrorAlert>
+        </UserChangeForm>) : ''
+      }
+        {isAdminShown ? <AdminForm /> : ''}
     </Container>
   )
 }

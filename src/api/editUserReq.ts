@@ -1,6 +1,7 @@
 import { appAxios } from "./axios.config"
 
 export const editUserReq = async (targetField: any, value: any) => {
+  console.log(targetField, value)
   switch(targetField) {
     case 'username':
       try {
